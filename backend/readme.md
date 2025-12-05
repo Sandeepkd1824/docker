@@ -79,6 +79,13 @@ After verifying new containers, remove old ones:
 docker rm -f backend1 frontend1
 ```
 
+<!-- docker tag mybackend:v2 sandeepkd1824/mybackend:v2
+docker tag myfrontend:v2 sandeepkd1824/myfrontend:v2
+
+docker push sandeepkd1824/mybackend:v2
+docker push sandeepkd1824/myfrontend:v2 -->
+
+
 ## Useful Docker Commands
 
 * List running containers: `docker ps`
@@ -107,6 +114,29 @@ docker-compose up --build
 * Keep old containers until new versions are verified.
 * Use **environment variables** to configure URLs between containers.
 * Use `docker logs` for debugging.
+
+
+
+
+# 1. Build images
+docker build -t mybackend:v3 ./backend
+docker build -t myfrontend:v3 ./frontend
+
+# 2. Tag for Docker Hub
+docker tag mybackend:v3 sandeepkd1824/mybackend:v3
+docker tag myfrontend:v3 sandeepkd1824/myfrontend:v3
+
+# 3. Push to Docker Hub
+docker push sandeepkd1824/mybackend:v3
+docker push sandeepkd1824/myfrontend:v3
+
+# 4. Remove old containers (if needed)
+docker rm -f backend2 frontend2
+
+# 5. Run new containers
+docker run -d --name backend3 --network mynet -p 5002:5000 sandeepkd1824/mybackend:v3
+docker run -d --name frontend3 --network mynet -p 3002:3000 -e BACKEND_URL=http://backend3:5000/process sandeepkd1824/myfrontend:v3
+
 
 
 
